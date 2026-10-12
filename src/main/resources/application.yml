@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: vtex-payment-connector
+  datasource:
+    url: jdbc:h2:mem:payments;DB_CLOSE_DELAY=-1
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: ${PORT:8080}
+
+connector:
+  # En VTEX se configuran en la afiliación del conector. Aquí, por variable de entorno.
+  app-key: ${VTEX_APP_KEY:demo-key}
+  app-token: ${VTEX_APP_TOKEN:demo-token}
+  # Cuánto tarda el banco de mentira en resolver un pago asíncrono
+  async-delay: ${ASYNC_DELAY:20s}
+  callback-max-attempts: 5
+  delay-to-cancel: 21600
+  job-interval-ms: 5000
+
+springdoc:
+  swagger-ui:
+    path: /docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

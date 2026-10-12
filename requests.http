@@ -1,0 +1,67 @@
+### Peticiones de ejemplo para la extensión REST Client de VS Code o el cliente HTTP de IntelliJ.
+### Corre la app primero: ./mvnw spring-boot:run
+
+@host = http://localhost:8080
+@appKey = demo-key
+@appToken = demo-token
+
+### Métodos de pago que ofrece el conector
+GET {{host}}/manifest
+
+### 1. Autorizar un pago (tarjeta que siempre se aprueba)
+POST {{host}}/payments
+Content-Type: application/json
+X-VTEX-API-AppKey: {{appKey}}
+X-VTEX-API-AppToken: {{appToken}}
+
+{
+  "paymentId": "PAY-001",
+  "transactionId": "TX-001",
+  "orderId": "v1001-01",
+  "paymentMethod": "Visa",
+  "value": 1299.50,
+  "currency": "MXN",
+  "installments": 1,
+  "card": { "holder": "Cliente Prueba", "number": "4444333322221111", "csc": "123" }
+}
+
+### 2. Capturar una parte
+POST {{host}}/payments/PAY-001/settlements
+Content-Type: application/json
+X-VTEX-API-AppKey: {{appKey}}
+X-VTEX-API-AppToken: {{appToken}}
+
+{ "requestId": "settle-1", "value": 1000.00 }
+
+### 3. Reembolsar
+POST {{host}}/payments/PAY-001/refunds
+Content-Type: application/json
+X-VTEX-API-AppKey: {{appKey}}
+X-VTEX-API-AppToken: {{appToken}}
+
+{ "requestId": "refund-1", "value": 200.00 }
+
+### 4. Pago asíncrono: responde "undefined" y avisa al callbackUrl unos segundos después.
+### Cambia el callbackUrl por una URL tuya de https://webhook.site para ver llegar el aviso.
+POST {{host}}/payments
+Content-Type: application/json
+X-VTEX-API-AppKey: {{appKey}}
+X-VTEX-API-AppToken: {{appToken}}
+
+{
+  "paymentId": "PAY-002",
+  "transactionId": "TX-002",
+  "paymentMethod": "Mastercard",
+  "value": 850.00,
+  "currency": "MXN",
+  "card": { "number": "4222222222222224" },
+  "callbackUrl": "https://webhook.site/tu-id"
+}
+
+### 5. Cancelar (solo funciona si no se ha capturado nada)
+POST {{host}}/payments/PAY-002/cancellations
+Content-Type: application/json
+X-VTEX-API-AppKey: {{appKey}}
+X-VTEX-API-AppToken: {{appToken}}
+
+{ "requestId": "cancel-1" }

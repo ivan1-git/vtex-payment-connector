@@ -1,6 +1,5 @@
 # vtex-payment-connector
 
-[![CI](https://github.com/ivan1-git/vtex-payment-connector/actions/workflows/ci.yml/badge.svg)](https://github.com/ivan1-git/vtex-payment-connector/actions/workflows/ci.yml)
 ![Java 17](https://img.shields.io/badge/Java-17-orange)
 ![Spring Boot 3.5](https://img.shields.io/badge/Spring%20Boot-3.5-6db33f)
 
@@ -176,8 +175,8 @@ src/main/java/dev/ivanjimenez/connector
 
 Son 27 pruebas. Hay unitarias (reglas de `Payment` y del banco sandbox) y de integración que
 levantan la API completa con MockMvc y H2: credenciales, idempotencia, capturas parciales,
-reembolsos, cancelaciones y el flujo asíncrono con reintentos del callback. Corren en GitHub
-Actions con cada push.
+reembolsos, cancelaciones y el flujo asíncrono con reintentos del callback. También hay un
+workflow de GitHub Actions ([`ci.yml`](.github/workflows/ci.yml)) que las corre en cada push.
 
 ## Lo que le falta para producción
 
